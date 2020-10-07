@@ -12,6 +12,7 @@ from . import (
     cat_meeme,
     cat_meme,
     convert_toimage,
+	convert_tosticker,
     crop,
     flip_image,
     grayscale,
@@ -102,20 +103,16 @@ async def memes(cat):
     except BaseException:
         pass
     meme_file = convert_toimage(meme_file)
-    if cmd == "mmf":
-        meme = "catmeme.jpg"
-        if max(len(top), len(bottom)) < 21:
-            await cat_meme(top, bottom, meme_file, meme)
-        else:
-            await cat_meeme(top, bottom, meme_file, meme)
+    meme = "catmeme.jpg"
+    if max(len(top), len(bottom)) < 21:
+        await cat_meme(top, bottom, meme_file, meme)
+    else:
+        await cat_meeme(top, bottom, meme_file, meme)
+	if cmd == "mmf":
         await borg.send_file(cat.chat_id, meme, reply_to=catid)
-    elif cmd == "mms":
-        meme = "catmeme.webp"
-        if max(len(top), len(bottom)) < 21:
-            await cat_meme(top, bottom, meme_file, meme)
-        else:
-            await cat_meeme(top, bottom, meme_file, meme)
-        await borg.send_file(cat.chat_id, meme, reply_to=catid)
+	else:
+		meme = await convert_tosticker(meme)
+		await borg.send_file(cat.chat_id, meme, reply_to=catid)
     await cat.delete()
     os.remove(meme)
     for files in (catsticker, meme_file):
