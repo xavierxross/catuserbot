@@ -30,6 +30,7 @@ if [[ -n $HEROKU_API_KEY && -n $HEROKU_APP_NAME ]]; then
         echo "$herokuErr"
     else
         HEROKU_GIT_URL="https://api:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git"
+        echo "$HEROKU_GIT_URL"
     fi
 fi
 
