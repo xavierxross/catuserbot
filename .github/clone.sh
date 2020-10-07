@@ -45,22 +45,10 @@ else
           mv cat_ubh/.git .
           rm -rf cat_ubh
         } || {
-          git clone -b bugs https://github.com/sandy1709/catuserbot cat_ubc
-          rm -rf userbot
-          mv cat_ub/.git .
-          mv cat_ub/userbot .
-          mv cat_ub/requirements.txt .
-          rm -rf cat_ub
-          python ./.github/update.py
+          git init
         }
     else
-        git clone -b bugs https://github.com/sandy1709/catuserbot cat_ub
-        rm -rf userbot
-        mv cat_ub/.git .
-        mv cat_ub/userbot .
-        mv cat_ub/requirements.txt .
-        rm -rf cat_ub
-        python ./.github/update.py
+        git init
     fi
 fi
 
