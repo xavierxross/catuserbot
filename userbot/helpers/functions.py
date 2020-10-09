@@ -3,7 +3,7 @@ import re
 import time
 import zipfile
 from random import choice
-
+import urllib.request
 import PIL.ImageOps
 import requests
 from PIL import Image
@@ -56,21 +56,19 @@ async def admin_groups(cat):
 
 
 async def yt_search(cat):
-    search = cat
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument("--ignore-certificate-errors")
-    chrome_options.add_argument("--test-type")
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.binary_location = Config.CHROME_BIN
-    driver = webdriver.Chrome(chrome_options=chrome_options)
-    driver.get("https://www.youtube.com/results?search_query=" + search)
-    user_data = driver.find_elements_by_xpath('//*[@id="video-title"]')
-    for i in user_data:
-        video_link = i.get_attribute("href")
-        break
-    return video_link if video_link else "Couldnt fetch results"
+    try:
+        cat = urllib.parse.quote(cat)
+        html = urllib.request.urlopen("https://www.youtube.com/results?search_query="+cat)
+        user_data = re.findall(r"watch\?v=(\S{11})", html.read().decode())
+        video_link=None
+        if user_data:
+            video_link = "https://www.youtube.com/watch?v="+ user_data[0]
+        if video_link:
+            return video_link
+        else:
+            return "Couldnt fetch results"
+    except:
+        return "Couldnt fetch results"
 
 
 # for stickertxt
