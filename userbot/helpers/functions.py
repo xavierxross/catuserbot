@@ -1,17 +1,15 @@
 import os
 import re
 import time
+import urllib.request
 import zipfile
 from random import choice
-import urllib.request
+
 import PIL.ImageOps
 import requests
 from PIL import Image
-from selenium import webdriver
 from telethon.tl.types import Channel, PollAnswer
 from validators.url import url
-
-from ..Config import Config
 
 
 async def get_readable_time(seconds: int) -> str:
@@ -58,11 +56,13 @@ async def admin_groups(cat):
 async def yt_search(cat):
     try:
         cat = urllib.parse.quote(cat)
-        html = urllib.request.urlopen("https://www.youtube.com/results?search_query="+cat)
+        html = urllib.request.urlopen(
+            "https://www.youtube.com/results?search_query=" + cat
+        )
         user_data = re.findall(r"watch\?v=(\S{11})", html.read().decode())
-        video_link=None
+        video_link = None
         if user_data:
-            video_link = "https://www.youtube.com/watch?v="+ user_data[0]
+            video_link = "https://www.youtube.com/watch?v=" + user_data[0]
         if video_link:
             return video_link
         else:
