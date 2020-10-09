@@ -54,7 +54,7 @@ pytz
 qrcode
 regex
 requests
-search-engine-parser
+git+https://github.com/bisoncorps/search-engine-parser
 selenium
 spamwatch
 speedtest-cli
