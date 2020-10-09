@@ -1,13 +1,14 @@
- # imported from pornhub credits to pornhub
+# imported from pornhub credits to pornhub
 import asyncio
 import io
 from time import time
+
 from coffeehouse.api import API
 from coffeehouse.lydia import LydiaAI
 
+from ..utils import admin_cmd, edit_or_reply, sudo_cmd
 from . import CMD_HELP
 from .sql_helper.lydia_ai_sql import add_s, get_all_s, get_s, remove_s
-from ..utils import admin_cmd , sudo_cmd , edit_or_reply
 
 if Var.LYDIA_API_KEY:
     api_key = Var.LYDIA_API_KEY
@@ -18,19 +19,19 @@ if Var.LYDIA_API_KEY:
 
 
 @bot.on(admin_cmd(pattern="(en|re|li)ai"))
-@bot.on(sudo_cmd(pattern="(en|re|li)ai",allow_sudo=True))
+@bot.on(sudo_cmd(pattern="(en|re|li)ai", allow_sudo=True))
 async def lydia_disable_enable(event):
     if event.fwd_from:
         return
     if Var.LYDIA_API_KEY is None:
-        await edit_or_reply(event ,"Please add required `LYDIA_API_KEY` env var")
+        await edit_or_reply(event, "Please add required `LYDIA_API_KEY` env var")
         return
     if event.reply_to_msg_id is not None:
         input_str = event.pattern_match.group(1)
         reply_msg = await event.get_reply_message()
         user_id = reply_msg.from_id
         chat_id = event.chat_id
-        catevent = await edit_or_reply(event ,"Processing...")
+        catevent = await edit_or_reply(event, "Processing...")
         if input_str == "en":
             # Create a new chat session (Like a conversation)
             session = lydia.create_session()
