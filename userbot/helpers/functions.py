@@ -197,7 +197,7 @@ def convert_toimage(image):
     return "./temp/temp.jpg"
 
 
-def convert_tosticker(image):
+async def convert_tosticker(image):
     img = Image.open(image)
     if img.mode != "RGB":
         img = img.convert("RGB")
