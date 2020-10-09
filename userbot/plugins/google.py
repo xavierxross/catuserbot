@@ -21,7 +21,7 @@ opener.addheaders = [("User-agent", useragent)]
 @borg.on(admin_cmd(outgoing=True, pattern=r"gs (.*)"))
 async def gsearch(q_event):
     match = q_event.pattern_match.group(1)
-    page = findall(r"page=\d+", match)
+    page = re.findall(r"page=\d+", match)
     try:
         page = page[0]
         page = page.replace("page=", "")
