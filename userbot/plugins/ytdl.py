@@ -58,6 +58,7 @@ async def download_video(v_url):
             "format": "best",
             "addmetadata": True,
             "key": "FFmpegMetadata",
+            "writethumbnail": True,
             "prefer_ffmpeg": True,
             "geo_bypass": True,
             "nocheckcertificate": True,
@@ -134,7 +135,7 @@ async def download_video(v_url):
             ),
         )
         os.remove(f"{ytdl_data['id']}.mp3")
-        if cathumb:
+        if catthumb:
             os.remove(catthumb)
         await v_url.delete()
     elif video:
@@ -155,6 +156,8 @@ async def download_video(v_url):
             ),
         )
         os.remove(f"{ytdl_data['id']}.mp4")
+        if catthumb:
+            os.remove(catthumb)
         await v_url.delete()
 
 
