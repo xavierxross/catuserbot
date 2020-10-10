@@ -65,13 +65,16 @@ async def file_data(reply):
 async def mediainfo(event):
     X_MEDIA = None
     reply = await event.get_reply_message()
-    if not (reply or reply.media):
-        await edit_or_reply(event, "reply to media first")
+    if not reply:
+        await edit_or_reply(event, "reply to media to get info")
         return
-    catevent = await edit_or_reply(event, "`Processing ...`")
+    if not reply.media:
+        await edit_or_reply(event, "reply to media to get info")
+        return
+    catevent = await edit_or_reply(event, "`Gathering ...`")
     X_MEDIA = reply.file.mime_type
     if (not X_MEDIA) or (X_MEDIA.startswith(("text"))):
-        return await catevent.edit("Reply To a Vaild Media Format")
+        return await catevent.edit("Reply To a supported Media Format")
     hmm = await file_data(reply)
     file_path = await reply.download_media(Config.TEMP_DIR)
     out, err, ret, pid = await runcmd(f"mediainfo '{file_path}'")
