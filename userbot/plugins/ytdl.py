@@ -5,6 +5,7 @@ import os
 import time
 from html import unescape
 from pathlib import Path
+
 from googleapiclient.discovery import build
 from telethon.tl.types import DocumentAttributeAudio
 from youtube_dl import YoutubeDL
@@ -118,7 +119,7 @@ async def download_video(v_url):
             v_url.chat_id,
             f"{ytdl_data['id']}.mp3",
             supports_streaming=True,
-            thumb =catthumb,
+            thumb=catthumb,
             attributes=[
                 DocumentAttributeAudio(
                     duration=int(ytdl_data["duration"]),
