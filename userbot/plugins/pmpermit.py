@@ -4,9 +4,9 @@ import io
 from telethon import events, functions
 from telethon.tl.functions.users import GetFullUserRequest
 
-from .. import ALIVE_NAME, CMD_HELP
+from . import ALIVE_NAME, CMD_HELP, check
 from ..utils import admin_cmd
-from . import check
+ 
 from .sql_helper import pmpermit_sql as pmpermit_sql
 
 PM_WARNS = {}
@@ -219,19 +219,17 @@ if Var.PRIVATE_GROUP_ID is not None:
         else:
             sender = await bot.get_entity(event.from_id)
             CACHE[event.from_id] = sender
-        if chat_id == bot.uid:
-            # don't log Saved Messages
+        if chat_id == bot.uid: # don't log Saved Messages
             return
-        if sender.bot:
-            # don't log bots
+        if sender.bot: # don't log bots
             return
-        if sender.verified:
-            # don't log verified accounts
+        if sender.verified: # don't log verified accounts
             return
         if len(event.raw_text) == 1 and check(event.raw_text):
             return
+        if event.raw_text == "/start":
+            return
         if not pmpermit_sql.is_approved(chat_id):
-            # pm permit
             await do_pm_permit_action(chat_id, event)
 
     async def do_pm_permit_action(chat_id, event):
@@ -248,15 +246,11 @@ if Var.PRIVATE_GROUP_ID is not None:
             the_message += "#BLOCKED_PMs\n\n"
             the_message += f"[User](tg://user?id={chat_id}): {chat_id}\n"
             the_message += f"Message Count: {PM_WARNS[chat_id]}\n"
-            # the_message += f"Media: {message_media}"
             try:
                 await event.client.send_message(
                     entity=Var.PRIVATE_GROUP_ID,
                     message=the_message,
-                    # reply_to=,
-                    # parse_mode="html",
                     link_preview=False,
-                    # file=message_media,
                     silent=True,
                 )
                 return
