@@ -65,7 +65,7 @@ async def file_data(reply):
 async def mediainfo(event):
     X_MEDIA = None
     reply = await event.get_reply_message()
-    if not reply.media:
+    if not (reply or reply.media):
         await edit_or_reply(event, "reply to media first")
         return
     catevent = await edit_or_reply(event, "`Processing ...`")
