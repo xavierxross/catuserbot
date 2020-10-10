@@ -1,16 +1,10 @@
 # Thanks to @AvinashReddy3108 for this plugin
 
-"""
-Audio and video downloader using Youtube-dl
-.yta To Download in mp3 format
-.ytv To Download in mp4 format
-"""
-
 import asyncio
 import os
 import time
 from html import unescape
-
+from pathlib import Path
 from googleapiclient.discovery import build
 from telethon.tl.types import DocumentAttributeAudio
 from youtube_dl import YoutubeDL
@@ -109,6 +103,11 @@ async def download_video(v_url):
         await v_url.edit(f"{str(type(e)): {str(e)}}")
         return
     c_time = time.time()
+    catthumb = Path(f"{ytdl_data['id']}.jpg")
+    if not os.path.exists(catthumb):
+        catthumb = Path(f"{ytdl_data['id']}.webp")
+    elif not os.path.exists(catthumb):
+        catthumb = None
     if song:
         await v_url.edit(
             f"`Preparing to upload song:`\
@@ -119,6 +118,7 @@ async def download_video(v_url):
             v_url.chat_id,
             f"{ytdl_data['id']}.mp3",
             supports_streaming=True,
+            thumb =catthumb,
             attributes=[
                 DocumentAttributeAudio(
                     duration=int(ytdl_data["duration"]),
@@ -133,6 +133,8 @@ async def download_video(v_url):
             ),
         )
         os.remove(f"{ytdl_data['id']}.mp3")
+        if cathumb:
+            os.remove(catthumb)
         await v_url.delete()
     elif video:
         await v_url.edit(
@@ -199,10 +201,12 @@ async def youtube_search(
         )
         .execute()
     )
-    videos = []
-    for search_result in search_response.get("items", []):
-        if search_result["id"]["kind"] == "youtube#video":
-            videos.append(search_result)
+    videos = [
+        search_result
+        for search_result in search_response.get("items", [])
+        if search_result["id"]["kind"] == "youtube#video"
+    ]
+
     try:
         nexttok = search_response["nextPageToken"]
         return (nexttok, videos)
