@@ -24,11 +24,10 @@ thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "thumb_image.jpg"
 with open(thumb_image_path, "wb") as f:
     f.write(requests.get(Config.THUMB_IMAGE).content)
 
-
 def check(cat):
     if "/start" in cat:
         return True
-    hi = re.search(re.escape(f"\\b{cat}\\b"), "a|b|c|d")
+    hi = re.search(cat, "(a|b|c|d)")
     return bool(hi)
 
 
