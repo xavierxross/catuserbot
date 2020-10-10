@@ -1,10 +1,13 @@
-#plugin by @deleteduser420 
-#ported to telethon by @mrconfused (@sandy1709)
+# plugin by @deleteduser420
+# ported to telethon by @mrconfused (@sandy1709)
 
 import os
-from . import runcmd, yaml_format, CMD_HELP
-from ..utils import admin_cmd, edit_or_reply, sudo_cmd, humanbytes
+
 from html_telegraph_poster import TelegraphPoster
+
+from ..utils import admin_cmd, edit_or_reply, humanbytes, sudo_cmd
+from . import CMD_HELP, runcmd, yaml_format
+
 
 async def post_to_telegraph(page_title, html_format_content):
     post_client = TelegraphPoster(use_api=True)
@@ -14,14 +17,15 @@ async def post_to_telegraph(page_title, html_format_content):
         title=page_title,
         author=auth_name,
         author_url="https://t.me/catuserbot17",
-        text=html_format_content
+        text=html_format_content,
     )
-    return post_page['url']
+    return post_page["url"]
+
 
 async def file_data(reply):
     hmm = ""
     if reply.file.name:
-        hmm+= f"Name  :  {reply.file.name}<br>"
+        hmm += f"Name  :  {reply.file.name}<br>"
     if reply.file.mime_type:
         hmm += f"Mime type  :  {reply.file.mime_type}<br>"
     if reply.file.size:
@@ -41,7 +45,7 @@ async def file_data(reply):
     if reply.file.duration:
         hmm += f"Duration  :  {reply.file.duration} seconds<br>"
     if reply.file.height:
-        hmm += f"Height :  {reply.file.height}<br>" 
+        hmm += f"Height :  {reply.file.height}<br>"
     if reply.file.width:
         hmm += f"Width  :  {reply.file.width}<br>"
     if reply.file.sticker_set:
@@ -55,15 +59,16 @@ async def file_data(reply):
         pass
     return hmm
 
+
 @borg.on(admin_cmd(pattern="minfo$"))
-@borg.on(sudo_cmd(pattern="minfo$",allow_sudo=True))
+@borg.on(sudo_cmd(pattern="minfo$", allow_sudo=True))
 async def mediainfo(event):
     X_MEDIA = None
     reply = await event.get_reply_message()
     if not reply.media:
         await edit_or_reply(event, "reply to media first")
         return
-    catevent = await edit_or_reply(event,"`Processing ...`")
+    catevent = await edit_or_reply(event, "`Processing ...`")
     X_MEDIA = reply.file.mime_type
     if (not X_MEDIA) or (X_MEDIA.startswith(("text"))):
         return await catevent.edit("Reply To a Vaild Media Format")
@@ -82,12 +87,17 @@ async def mediainfo(event):
 {out} 
 </code>"""
     link = await post_to_telegraph(f"{X_MEDIA}", body_text)
-    await catevent.edit(f"ℹ️  <b>MEDIA INFO:  <a href ='{link}' > {X_MEDIA}</a></b>", parse_mode="HTML",link_preview=True)
+    await catevent.edit(
+        f"ℹ️  <b>MEDIA INFO:  <a href ='{link}' > {X_MEDIA}</a></b>",
+        parse_mode="HTML",
+        link_preview=True,
+    )
     os.remove(file_path)
+
 
 CMD_HELP.update(
     {
-       "mediainfo": "**Plugin :** `mediainfo`\
+        "mediainfo": "**Plugin :** `mediainfo`\
       \n\n**Syntax : **`.minfo` reply to media \
       \n**Usage : ** shows you the media information."
     }
