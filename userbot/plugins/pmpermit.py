@@ -4,9 +4,8 @@ import io
 from telethon import events, functions
 from telethon.tl.functions.users import GetFullUserRequest
 
-from . import ALIVE_NAME, CMD_HELP, check
 from ..utils import admin_cmd
- 
+from . import ALIVE_NAME, CMD_HELP, check
 from .sql_helper import pmpermit_sql as pmpermit_sql
 
 PM_WARNS = {}
@@ -219,11 +218,11 @@ if Var.PRIVATE_GROUP_ID is not None:
         else:
             sender = await bot.get_entity(event.from_id)
             CACHE[event.from_id] = sender
-        if chat_id == bot.uid: # don't log Saved Messages
+        if chat_id == bot.uid:  # don't log Saved Messages
             return
-        if sender.bot: # don't log bots
+        if sender.bot:  # don't log bots
             return
-        if sender.verified: # don't log verified accounts
+        if sender.verified:  # don't log verified accounts
             return
         if len(event.raw_text) == 1 and check(event.raw_text):
             return
