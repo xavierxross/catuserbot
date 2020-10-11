@@ -241,6 +241,8 @@ if Var.PRIVATE_GROUP_ID is not None:
             return
         if chat_id in PM_START:
             return
+        print(chat_id)
+        print(PM_START)
         if not pmpermit_sql.is_approved(chat_id):
             await do_pm_permit_action(chat_id, event)
 
