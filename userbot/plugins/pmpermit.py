@@ -269,6 +269,8 @@ if Var.PRIVATE_GROUP_ID is not None:
             except BaseException:
                 return
         catid = chat_id
+        if chat_id in PM_START:
+            return
         if PMPERMIT_PIC:
             if Config.CUSTOM_PMPERMIT_TEXT:
                 USER_BOT_NO_WARN = (
