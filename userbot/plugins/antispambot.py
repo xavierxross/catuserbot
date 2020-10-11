@@ -29,7 +29,9 @@ if Config.ANTISPAMBOT_BAN:
                 adder = event.action_message.from_id
             except AttributeError:
                 return
-        async for admin in event.client.iter_participants(event.chat_id, filter=ChannelParticipantsAdmins):
+        async for admin in event.client.iter_participants(
+            event.chat_id, filter=ChannelParticipantsAdmins
+        ):
             if admin.id == adder:
                 ignore = True
                 break
