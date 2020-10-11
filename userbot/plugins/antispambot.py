@@ -8,7 +8,7 @@ from telethon import events
 from telethon.errors import ChatAdminRequiredError
 from telethon.tl.types import ChannelParticipantsAdmins
 
-from ..utils import admin_cmd, is_admin, sudo_cmd,edit_or_reply
+from ..utils import admin_cmd, edit_or_reply, is_admin, sudo_cmd
 from . import BOTLOG, BOTLOG_CHATID, LOGS, spamwatch
 from .sql_helper.gban_sql_helper import get_gbanuser, is_gbanned
 
@@ -97,7 +97,10 @@ if Config.ANTISPAMBOT_BAN:
 @borg.on(admin_cmd(pattern="cascheck$"))
 @borg.on(sudo_cmd(pattern="cascheck$", allow_sudo=True))
 async def caschecker(cas):
-    catevent = await edit_or_reply(cas , "`checking any cas(combot antispam service) banned users here, this may takes minutes too......`")
+    catevent = await edit_or_reply(
+        cas,
+        "`checking any cas(combot antispam service) banned users here, this may takes minutes too......`",
+    )
     text = ""
     chat = cas.chat_id
     try:
@@ -136,7 +139,10 @@ async def caschecker(cas):
 async def caschecker(cas):
     text = ""
     chat = cas.chat_id
-    catevent = await edit_or_reply(cas , "`checking any spamwatch banned users here, this may takes minutes too......`")
+    catevent = await edit_or_reply(
+        cas,
+        "`checking any spamwatch banned users here, this may takes minutes too......`",
+    )
     try:
         info = await cas.client.get_entity(chat)
     except (TypeError, ValueError) as err:
