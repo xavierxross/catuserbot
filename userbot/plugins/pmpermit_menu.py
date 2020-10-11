@@ -6,7 +6,7 @@ Credits: written by ༺αиυвιѕ༻ {@A_Dark_Princ3}
 """
 import asyncio
 
-from telethon import functions
+from telethon import functions, events
 
 import userbot.plugins.sql_helper.pmpermit_sql as pmpermit_sql
 
