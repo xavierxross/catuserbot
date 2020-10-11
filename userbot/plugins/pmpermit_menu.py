@@ -9,13 +9,13 @@ import asyncio
 from telethon import functions
 
 import userbot.plugins.sql_helper.pmpermit_sql as pmpermit_sql
-from userbot import ALIVE_NAME
+from . import ALIVE_NAME
 
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else "cat"
 PREV_REPLY_MESSAGE = {}
 
 
-@command(pattern=r"\/start", incoming=True)
+@bot.on(events.NewMessage(pattern=r"\/start", incoming=True))
 async def _(event):
     chat_id = event.from_id
     event.sender_id
@@ -26,7 +26,7 @@ async def _(event):
         if not event.is_private:
             return
         PM = (
-            "`Hello. You are accessing the availabe menu of my peru master,`"
+            "Hello. You are accessing the availabe menu of my master, "
             f"{DEFAULTUSER}.\n"
             "__Let's make this smooth and let me know why you are here.__\n"
             "**Choose one of the following reasons why you are here:**\n\n"
@@ -124,18 +124,21 @@ async def _(event):
                     return
                 await borg.send_message(
                     chat,
-                    "`You have entered an invalid command. Please send /start again or do not send another message if you do not wish to be blocked and reported.`",
+                    "You have entered an invalid command. Please send `/start` again or do not send another message if you do not wish to be blocked and reported.",
                 )
-                response = await conv.get_response(chat)
-                z = response.text
-                if not z == "/start":
-                    if pmpermit_sql.is_approved(chat_id):
-                        return
-                    await borg.send_message(chat, LWARN)
-                    await conv.get_response(chat)
-                    if not response.text == "/start":
+                try:
+                    response = await conv.get_response(chat)
+                    z = response.text
+                    if not z == "/start":
                         if pmpermit_sql.is_approved(chat_id):
                             return
-                        await borg.send_message(chat, TWO)
-                        await asyncio.sleep(3)
-                        await event.client(functions.contacts.BlockRequest(chat_id))
+                        await borg.send_message(chat, LWARN)
+                        await conv.get_response(chat)
+                        if not response.text == "/start":
+                            if pmpermit_sql.is_approved(chat_id):
+                                return
+                            await borg.send_message(chat, TWO)
+                            await asyncio.sleep(3)
+                            await event.client(functions.contacts.BlockRequest(chat_id))
+                except:
+                    pass
