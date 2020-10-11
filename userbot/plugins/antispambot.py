@@ -83,7 +83,7 @@ if Config.ANTISPAMBOT_BAN:
                 except Exception as e:
                     LOGS.info(e)
         if BOTLOG and catbanned:
-            await bot.send_message(
+            await event.client.send_message(
                 BOTLOG_CHATID,
                 "#ANTISPAMBOT\n"
                 f"**User :** [{user.first_name}](tg://user?id={user.id})\n"
