@@ -31,7 +31,7 @@ if Config.ANTISPAMBOT_BAN:
                 return
         ignore = any(
             admin.id == adder
-            for admin in bot.iter_participants(
+            async for admin in bot.iter_participants(
                 event.chat_id, filter=ChannelParticipantsAdmins
             )
         )
