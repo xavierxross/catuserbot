@@ -131,10 +131,7 @@ async def kang(args):
                 await bot.send_read_acknowledge(conv.chat_id)
                 await conv.send_message(packname)
                 x = await conv.get_response()
-                while (
-                    "Whoa! That's probably enough stickers for one pack, give it a break"
-                    in x.text
-                ):
+                while (("50" in x.text) or ("120" in x.text)):
                     try:
                         val = int(pack)
                         pack = val + 1
