@@ -234,7 +234,6 @@ if Var.PRIVATE_GROUP_ID is not None:
             return
         if sender.verified:  # don't log verified accounts
             return
-        print(event.raw_text)
         if event.raw_text == "/start":
             if chat_id not in PM_START:
                 PM_START.append(chat_id)
