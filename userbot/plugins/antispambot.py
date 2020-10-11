@@ -2,7 +2,6 @@
 # baning spmmers plugin for catuserbot by @sandy1709 and @mrconfused
 # included both cas(combot antispam service) and spamwatch (need to add more feaututres)
 
-
 from requests import get
 from telethon import events
 from telethon.errors import ChatAdminRequiredError
@@ -189,3 +188,13 @@ def spamchecker(id):
     if spamwatch:
         ban = spamwatch.get_ban(id)
     return bool(ban)
+
+
+CMD_HELP.update({
+        "antispambot": "**Plugin : **`antispambot`\
+        \n\n**Syntax : **`.cascheck`\
+        \n**Usage : **Searches for cas(combot antispam service) banned users in group and shows you the list\
+        \n\n**Syntax : **`.cascheck`\
+        \n**Usage : **Searches for spamwatch banned users in group and shows you the list\"
+    }
+)
