@@ -31,6 +31,7 @@ def check(cat):
     hi = re.search(cat, "(a|b|c|d)")
     return bool(hi)
 
+PM_START = []
 
 if Config.PRIVATE_GROUP_BOT_API_ID is None:
     BOTLOG = False
