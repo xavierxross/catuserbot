@@ -227,7 +227,7 @@ if Var.PRIVATE_GROUP_ID is not None:
             return
         if len(event.raw_text) == 1 and check(event.raw_text):
             return
-        if (chat_id in PM_START):
+        if chat_id in PM_START:
             return
         if not pmpermit_sql.is_approved(chat_id):
             await do_pm_permit_action(chat_id, event)
