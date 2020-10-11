@@ -6,13 +6,11 @@
 from requests import get
 from telethon import events
 from telethon.tl.types import ChannelParticipantsAdmins
-
+from .sql_helper.gban_sql_helper import is_gbanned, get_gbanuser
 from ..utils import is_admin
 from . import BOTLOG, BOTLOG_CHATID, LOGS, spamwatch
-from .sql_helper.gban_sql_helper import get_gbanuser, is_gbanned
 
 if Config.ANTISPAMBOT_BAN:
-
     @bot.on(events.ChatAction())
     async def antispam_ban(event):
         if not event.user_joined and not event.user_added:
@@ -41,29 +39,28 @@ if Config.ANTISPAMBOT_BAN:
             catgban = get_gbanuser(user.id)
             if catgban.reason:
                 hmm = await event.reply(
-                    f"[{user.first_name}](tg://user?id={user.id}) was gbanned by you For the reason `{catgban.reason}`"
-                )
+                        f"[{user.first_name}](tg://user?id={user.id}) was gbanned by you For the reason `{catgban.reason}`"
+                    )
             else:
                 hmm = await event.reply(
-                    f"[{user.first_name}](tg://user?id={user.id}) was gbanned by you"
+                        f"[{user.first_name}](tg://user?id={user.id}) was gbanned by you"
+                    )
+                try:
+                    await bot.edit_permissions(chat, user.id, view_messages=False)
+                    catbanned = True
+                except Exception as e:
+                    LOGS.info(e)
+        if spamwatch and not catbanned:
+            ban = spamwatch.get_ban(user.id)
+            if ban:
+                hmm = await event.reply(
+                    f"[{user.first_name}](tg://user?id={user.id}) was banned by spamwatch For the reason `{ban.reason}`"
                 )
                 try:
                     await bot.edit_permissions(chat, user.id, view_messages=False)
                     catbanned = True
                 except Exception as e:
                     LOGS.info(e)
-        if spamwatch:
-            if not catbanned:
-                ban = spamwatch.get_ban(user.id)
-                if ban:
-                    hmm = await event.reply(
-                        f"[{user.first_name}](tg://user?id={user.id}) was banned by spamwatch For the reason `{ban.reason}`"
-                    )
-                    try:
-                        await bot.edit_permissions(chat, user.id, view_messages=False)
-                        catbanned = True
-                    except Exception as e:
-                        LOGS.info(e)
         if not catbanned:
             try:
                 casurl = "https://api.cas.chat/check?user_id={}".format(user.id)
@@ -72,9 +69,7 @@ if Config.ANTISPAMBOT_BAN:
                 LOGS.info(e)
                 data = None
             if data and data["ok"]:
-                reason = (
-                    f"[Banned by Combot Anti Spam](https://cas.chat/query?u={user.id})"
-                )
+                reason = f"[Banned by Combot Anti Spam](https://cas.chat/query?u={user.id})"
                 hmm = await event.reply(
                     f"[{user.first_name}](tg://user?id={user.id}) was banned by Combat anti-spam service(CAS) For the reason check {reason}"
                 )
