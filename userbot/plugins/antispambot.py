@@ -48,11 +48,11 @@ if Config.ANTISPAMBOT_BAN:
                 hmm = await event.reply(
                     f"[{user.first_name}](tg://user?id={user.id}) was gbanned by you"
                 )
-                try:
-                    await bot.edit_permissions(chat, user.id, view_messages=False)
-                    catbanned = True
-                except Exception as e:
-                    LOGS.info(e)
+            try:
+                await bot.edit_permissions(chat, user.id, view_messages=False)
+                catbanned = True
+            except Exception as e:
+                LOGS.info(e)
         if spamwatch and not catbanned:
             ban = spamwatch.get_ban(user.id)
             if ban:
