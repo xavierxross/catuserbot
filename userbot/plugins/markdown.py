@@ -79,7 +79,7 @@ PARSED_ENTITIES = (
     MessageEntityCode,
     MessageEntityPre,
     MessageEntityTextUrl,
-    MessageEntityUnderline
+    MessageEntityUnderline,
 )
 # A matcher is a tuple of (regex pattern, parse function)
 # where the parse function takes the match and returns (text, entity)
