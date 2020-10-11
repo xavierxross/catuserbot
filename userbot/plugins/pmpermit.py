@@ -9,6 +9,7 @@ from . import ALIVE_NAME, CMD_HELP, check
 from .sql_helper import pmpermit_sql as pmpermit_sql
 
 PM_WARNS = {}
+PM_START = {}
 PREV_REPLY_MESSAGE = {}
 CACHE = {}
 PMPERMIT_PIC = Config.PMPERMIT_PIC
@@ -212,20 +213,23 @@ if Var.PRIVATE_GROUP_ID is not None:
             # userbot's should not reply to other userbot's
             # https://core.telegram.org/bots/faq#why-doesn-39t-my-bot-see-messages-from-other-bots
             return
-        if event.from_id in CACHE:
-            sender = CACHE[event.from_id]
+        if chat_id in CACHE:
+            sender = CACHE[chat_id]
         else:
-            sender = await bot.get_entity(event.from_id)
-            CACHE[event.from_id] = sender
+            sender = await bot.get_entity(chat_id)
+            CACHE[chat_id] = sender
         if chat_id == bot.uid:  # don't log Saved Messages
             return
         if sender.bot:  # don't log bots
             return
         if sender.verified:  # don't log verified accounts
             return
+        if event.raw_text == "/start":
+            PM_START.append(chat_id)
+            return
         if len(event.raw_text) == 1 and check(event.raw_text):
             return
-        if event.raw_text == "/start":
+        if chat_id in PM_START:
             return
         if not pmpermit_sql.is_approved(chat_id):
             await do_pm_permit_action(chat_id, event)
@@ -293,16 +297,17 @@ if Var.PRIVATE_GROUP_ID is not None:
 
 CMD_HELP.update(
     {
-        "pmpermit": ".approve\
-\nUsage: Approves the mentioned/replied person to PM.\
-.disapprove\
-\nUsage: dispproves the mentioned/replied person to PM.\
-\n\n.block\
-\nUsage: Blocks the person.\
-\n\n.unblock\
-\nUsage: unBlocks the person.\
-\n\n.listapproved\
-\nUsage: To list the all approved users.\
+        "pmpermit": "**Plugin : **`pmpermit`\
+        \n\n**Syntax : **.approve`\
+        \n**Usage : **Approves the mentioned/replied person to PM.\
+        \n\n**Syntax : **`.disapprove`\
+        \n**Usage : **dispproves the mentioned/replied person to PM.\
+        \n\n**Syntax : **`.block`\
+        \n**Usage : **Blocks the person.\
+        \n\n**Syntax : **`.unblock`\
+        \n**Usage : **unBlocks the person.\
+        \n\n**Syntax : **`.listapproved`\
+        \n**Usage : **To list the all approved users.\
 "
     }
 )
