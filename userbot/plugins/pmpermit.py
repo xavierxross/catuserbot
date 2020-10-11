@@ -234,8 +234,10 @@ if Var.PRIVATE_GROUP_ID is not None:
             return
         if sender.verified:  # don't log verified accounts
             return
+        print(event.raw_text)
         if event.raw_text == "/start":
-            PM_START.append(chat_id)
+            if chat_id not in PM_START:
+                PM_START.append(chat_id)
             return
         if len(event.raw_text) == 1 and check(event.raw_text):
             return
@@ -271,8 +273,6 @@ if Var.PRIVATE_GROUP_ID is not None:
             except BaseException:
                 return
         catid = chat_id
-        if chat_id in PM_START:
-            return
         if PMPERMIT_PIC:
             if Config.CUSTOM_PMPERMIT_TEXT:
                 USER_BOT_NO_WARN = (
