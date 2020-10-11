@@ -11,7 +11,7 @@ from telethon import events, functions
 import userbot.plugins.sql_helper.pmpermit_sql as pmpermit_sql
 
 from . import ALIVE_NAME
-
+from .pmpermit import PM_START
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else "cat"
 PREV_REPLY_MESSAGE = {}
 
@@ -21,6 +21,8 @@ async def _(event):
     chat_id = event.from_id
     if not pmpermit_sql.is_approved(chat_id):
         chat = await event.get_chat()
+        if chat_id not in PM_START:
+            PM_START.append(chat_id)
         if event.fwd_from:
             return
         if not event.is_private:
