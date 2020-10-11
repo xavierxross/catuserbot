@@ -1,15 +1,13 @@
 import asyncio
 import io
-
 from telethon import events, functions
 from telethon.tl.functions.users import GetFullUserRequest
 
 from ..utils import admin_cmd
-from . import ALIVE_NAME, CMD_HELP, Config, check
+from . import ALIVE_NAME, CMD_HELP, check,PM_START
 from .sql_helper import pmpermit_sql as pmpermit_sql
 
 PM_WARNS = {}
-PM_START = []
 PREV_REPLY_MESSAGE = {}
 CACHE = {}
 PMPERMIT_PIC = Config.PMPERMIT_PIC
