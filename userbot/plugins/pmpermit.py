@@ -279,11 +279,11 @@ if Var.PRIVATE_GROUP_ID is not None:
                 )
             else:
                 USER_BOT_NO_WARN = (
-            f"[──▄█▀█▄─────────██ \n▄████████▄───▄▀█▄▄▄▄ \n██▀▼▼▼▼▼─▄▀──█▄▄ \n█████▄▲▲▲─▄▄▄▀───▀▄ \n██████▀▀▀▀─▀────────▀▀](tg://user?id={catid})\n\n"
-            f"My master {DEFAULTUSER} haven't approved you yet. Don't spam his inbox"
-            "Leave your name,reason and 10k$ and hopefully you'll get a reply within 2 light years.\n\n"
-            "**Send** `/start` ** so that my master can decide why you're here.**"
-        )
+                    f"[──▄█▀█▄─────────██ \n▄████████▄───▄▀█▄▄▄▄ \n██▀▼▼▼▼▼─▄▀──█▄▄ \n█████▄▲▲▲─▄▄▄▀───▀▄ \n██████▀▀▀▀─▀────────▀▀](tg://user?id={catid})\n\n"
+                    f"My master {DEFAULTUSER} haven't approved you yet. Don't spam his inbox"
+                    "Leave your name,reason and 10k$ and hopefully you'll get a reply within 2 light years.\n\n"
+                    "**Send** `/start` ** so that my master can decide why you're here.**"
+                )
             r = await event.reply(USER_BOT_NO_WARN)
         PM_WARNS[chat_id] += 1
         if chat_id in PREV_REPLY_MESSAGE:
