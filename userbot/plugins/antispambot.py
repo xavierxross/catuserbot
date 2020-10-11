@@ -5,10 +5,11 @@
 
 from requests import get
 from telethon import events
-from telethon.tl.types import ChannelParticipantsAdmins
 from telethon.errors import ChatAdminRequiredError
-from ..utils import admin_cmd, edit_or_reply, sudo_cmd, is_admin
-from . import BOTLOG, BOTLOG_CHATID, LOGS, spamwatch, CMD_HELP
+from telethon.tl.types import ChannelParticipantsAdmins
+
+from ..utils import admin_cmd, is_admin, sudo_cmd
+from . import BOTLOG, BOTLOG_CHATID, LOGS, spamwatch
 from .sql_helper.gban_sql_helper import get_gbanuser, is_gbanned
 
 if Config.ANTISPAMBOT_BAN:
@@ -96,72 +97,78 @@ if Config.ANTISPAMBOT_BAN:
 @borg.on(admin_cmd(pattern="cascheck$"))
 @borg.on(sudo_cmd(pattern="cascheck$", allow_sudo=True))
 async def caschecker(cas):
-        text = ""
-        chat = cas.chat_id
-        try:
-            info = await cas.client.get_entity(chat)
-        except (TypeError, ValueError) as err:
-            await cas.edit(str(err))
-            return
-        try:
-            cas_count, members_count = (0,) * 2
-            banned_users = ""
-            async for user in cas.client.iter_participants(info.id):
-                if banchecker(user.id):
-                    cas_count += 1
-                    if not user.deleted:
-                        banned_users += f"{user.first_name} {user.id}\n"
-                    else:
-                        banned_users += f"Deleted Account {user.id}\n"
-                members_count += 1
-            text = "Warning! `{}` of `{}` users are CAS Banned:\n".format(cas_count, members_count)
-            text += banned_users
-            if not cas_count:
-                text = "No CAS Banned users found!"
-        except ChatAdminRequiredError as carerr:
-            await cas.edit("`CAS check failed: Admin privileges are required`")
-            print("ChatAdminRequiredError:", carerr)
-            return
-        except BaseException as be:
-            await cas.edit("`CAS check failed`")
-            print("BaseException:", be)
-            return
-        await cas.edit(text)
+    text = ""
+    chat = cas.chat_id
+    try:
+        info = await cas.client.get_entity(chat)
+    except (TypeError, ValueError) as err:
+        await cas.edit(str(err))
+        return
+    try:
+        cas_count, members_count = (0,) * 2
+        banned_users = ""
+        async for user in cas.client.iter_participants(info.id):
+            if banchecker(user.id):
+                cas_count += 1
+                if not user.deleted:
+                    banned_users += f"{user.first_name} {user.id}\n"
+                else:
+                    banned_users += f"Deleted Account {user.id}\n"
+            members_count += 1
+        text = "Warning! `{}` of `{}` users are CAS Banned:\n".format(
+            cas_count, members_count
+        )
+        text += banned_users
+        if not cas_count:
+            text = "No CAS Banned users found!"
+    except ChatAdminRequiredError as carerr:
+        await cas.edit("`CAS check failed: Admin privileges are required`")
+        print("ChatAdminRequiredError:", carerr)
+        return
+    except BaseException as be:
+        await cas.edit("`CAS check failed`")
+        print("BaseException:", be)
+        return
+    await cas.edit(text)
+
 
 @borg.on(admin_cmd(pattern="spamcheck$"))
 @borg.on(sudo_cmd(pattern="spamcheck$", allow_sudo=True))
 async def caschecker(cas):
-        text = ""
-        chat = cas.chat_id
-        try:
-            info = await cas.client.get_entity(chat)
-        except (TypeError, ValueError) as err:
-            await cas.edit(str(err))
-            return
-        try:
-            cas_count, members_count = (0,) * 2
-            banned_users = ""
-            async for user in cas.client.iter_participants(info.id):
-                if banchecker(user.id):
-                    cas_count += 1
-                    if not user.deleted:
-                        banned_users += f"{user.first_name} {user.id}\n"
-                    else:
-                        banned_users += f"Deleted Account {user.id}\n"
-                members_count += 1
-            text = "Warning! `{}` of `{}` users are spamwatch Banned:\n".format(cas_count, members_count)
-            text += banned_users
-            if not cas_count:
-                text = "No spamwatch Banned users found!"
-        except ChatAdminRequiredError as carerr:
-            await cas.edit("`spamwatch check failed: Admin privileges are required`")
-            print("ChatAdminRequiredError:", carerr)
-            return
-        except BaseException as be:
-            await cas.edit("`spamwatch check failed`")
-            print("BaseException:", be)
-            return
-        await cas.edit(text)
+    text = ""
+    chat = cas.chat_id
+    try:
+        info = await cas.client.get_entity(chat)
+    except (TypeError, ValueError) as err:
+        await cas.edit(str(err))
+        return
+    try:
+        cas_count, members_count = (0,) * 2
+        banned_users = ""
+        async for user in cas.client.iter_participants(info.id):
+            if banchecker(user.id):
+                cas_count += 1
+                if not user.deleted:
+                    banned_users += f"{user.first_name} {user.id}\n"
+                else:
+                    banned_users += f"Deleted Account {user.id}\n"
+            members_count += 1
+        text = "Warning! `{}` of `{}` users are spamwatch Banned:\n".format(
+            cas_count, members_count
+        )
+        text += banned_users
+        if not cas_count:
+            text = "No spamwatch Banned users found!"
+    except ChatAdminRequiredError as carerr:
+        await cas.edit("`spamwatch check failed: Admin privileges are required`")
+        print("ChatAdminRequiredError:", carerr)
+        return
+    except BaseException as be:
+        await cas.edit("`spamwatch check failed`")
+        print("BaseException:", be)
+        return
+    await cas.edit(text)
+
 
 def banchecker(id):
     try:
@@ -172,8 +179,9 @@ def banchecker(id):
         data = None
     return bool(data and data["ok"])
 
+
 def spamchecker(id):
     ban = None
     if spamwatch:
         ban = spamwatch.get_ban(user.id)
-    return bool(ban)              
+    return bool(ban)
