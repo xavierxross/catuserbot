@@ -9,12 +9,12 @@ from . import ALIVE_NAME, CMD_HELP, check
 from .sql_helper import pmpermit_sql as pmpermit_sql
 
 PM_WARNS = {}
-PM_START = {}
+PM_START = []
 PREV_REPLY_MESSAGE = {}
 CACHE = {}
 PMPERMIT_PIC = Config.PMPERMIT_PIC
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else "cat"
-USER_BOT_WARN_ZERO = "`You were spamming my peru master's inbox, henceforth you are blocked by my master's userbot.` **Now GTFO, i'm playing minecraft** "
+USER_BOT_WARN_ZERO = "You were spamming my peru master's inbox, henceforth you are blocked by my master's userbot. **Now GTFO, i'm playing minecraft** "
 
 if Var.PRIVATE_GROUP_ID is not None:
 
@@ -205,7 +205,7 @@ if Var.PRIVATE_GROUP_ID is not None:
         message_text.lower()
         USER_BOT_NO_WARN = (
             f"[──▄█▀█▄─────────██ \n▄████████▄───▄▀█▄▄▄▄ \n██▀▼▼▼▼▼─▄▀──█▄▄ \n█████▄▲▲▲─▄▄▄▀───▀▄ \n██████▀▀▀▀─▀────────▀▀](tg://user?id={catid})\n\n"
-            f"My master {DEFAULTUSER} haven't approved you yet. Don't spam his inbox"
+            f"My master {DEFAULTUSER} haven't approved you yet. Don't spam his inbox "
             "Leave your name,reason and 10k$ and hopefully you'll get a reply within 2 light years.\n\n"
             "**Send** `/start` ** so that my master can decide why you're here.**"
         )
@@ -284,7 +284,7 @@ if Var.PRIVATE_GROUP_ID is not None:
             else:
                 USER_BOT_NO_WARN = (
                     f"[──▄█▀█▄─────────██ \n▄████████▄───▄▀█▄▄▄▄ \n██▀▼▼▼▼▼─▄▀──█▄▄ \n█████▄▲▲▲─▄▄▄▀───▀▄ \n██████▀▀▀▀─▀────────▀▀](tg://user?id={catid})\n\n"
-                    f"My master {DEFAULTUSER} haven't approved you yet. Don't spam his inbox"
+                    f"My master {DEFAULTUSER} haven't approved you yet. Don't spam his inbox "
                     "Leave your name,reason and 10k$ and hopefully you'll get a reply within 2 light years.\n\n"
                     "**Send** `/start` ** so that my master can decide why you're here.**"
                 )
