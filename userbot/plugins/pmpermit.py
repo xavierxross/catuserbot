@@ -201,10 +201,8 @@ if Var.PRIVATE_GROUP_ID is not None:
             return
         message_text = event.message.message
         chat_id = event.from_id
-        catid = chat_id
-        message_text.lower()
         USER_BOT_NO_WARN = (
-            f"[──▄█▀█▄─────────██ \n▄████████▄───▄▀█▄▄▄▄ \n██▀▼▼▼▼▼─▄▀──█▄▄ \n█████▄▲▲▲─▄▄▄▀───▀▄ \n██████▀▀▀▀─▀────────▀▀](tg://user?id={catid})\n\n"
+            f"[──▄█▀█▄─────────██ \n▄████████▄───▄▀█▄▄▄▄ \n██▀▼▼▼▼▼─▄▀──█▄▄ \n█████▄▲▲▲─▄▄▄▀───▀▄ \n██████▀▀▀▀─▀────────▀▀](tg://user?id={chat_id})\n\n"
             f"My master {DEFAULTUSER} haven't approved you yet. Don't spam his inbox "
             "Leave your name,reason and 10k$ and hopefully you'll get a reply within 2 light years.\n\n"
             "**Send** `/start` ** so that my master can decide why you're here.**"
@@ -229,7 +227,7 @@ if Var.PRIVATE_GROUP_ID is not None:
             return
         if len(event.raw_text) == 1 and check(event.raw_text):
             return
-        if chat_id in PM_START:
+        if (chat_id in PM_START):
             return
         if not pmpermit_sql.is_approved(chat_id):
             await do_pm_permit_action(chat_id, event)
@@ -252,8 +250,6 @@ if Var.PRIVATE_GROUP_ID is not None:
                 await event.client.send_message(
                     entity=Var.PRIVATE_GROUP_ID,
                     message=the_message,
-                    link_preview=False,
-                    silent=True,
                 )
                 return
             except BaseException:
@@ -268,8 +264,7 @@ if Var.PRIVATE_GROUP_ID is not None:
                 )
             else:
                 USER_BOT_NO_WARN = (
-                    "This is auto generated message from cat security service\n\n"
-                    f"Hi buddy my master {DEFAULTUSER} haven't approved you yet. so ,"
+                    f"My master {DEFAULTUSER} haven't approved you yet. Don't spam his inbox "
                     "Leave your name,reason and 10k$ and hopefully you'll get a reply within 2 light years.\n\n"
                     "**Send** `/start` ** so that my master can decide why you're here.**"
                 )
