@@ -24,6 +24,7 @@ if Config.ANTISPAMBOT_BAN:
             return
         catbanned = None
         adder = None
+        ignore = None
         if event.user_added:
             try:
                 adder = event.action_message.from_id
