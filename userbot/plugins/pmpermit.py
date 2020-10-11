@@ -33,6 +33,8 @@ if Var.PRIVATE_GROUP_ID is not None:
                 if chat.id in PREV_REPLY_MESSAGE:
                     await PREV_REPLY_MESSAGE[chat.id].delete()
                     del PREV_REPLY_MESSAGE[chat.id]
+                if chat.id in PM_START:
+                    PM_START.remove(chat.id)
                 pmpermit_sql.approve(chat.id, reason)
                 await event.edit(
                     "Approved to pm [{}](tg://user?id={})".format(firstname, chat.id)
@@ -57,6 +59,8 @@ if Var.PRIVATE_GROUP_ID is not None:
                 if chat in PREV_REPLY_MESSAGE:
                     await PREV_REPLY_MESSAGE[chat].delete()
                     del PREV_REPLY_MESSAGE[chat]
+                if chat.id in PM_START:
+                    PM_START.remove(chat.id)
                 pmpermit_sql.approve(chat, reason)
                 await event.edit(
                     "Approved to pm [{}](tg://user?id={})".format(firstname, chat)
@@ -93,6 +97,8 @@ if Var.PRIVATE_GROUP_ID is not None:
             replied_user = await event.client(GetFullUserRequest(event.chat_id))
             firstname = replied_user.user.first_name
             chat = await event.get_chat()
+            if chat.id in PM_START:
+                PM_START.remove(chat.id)
             if pmpermit_sql.is_approved(chat.id):
                 pmpermit_sql.disapprove(chat.id)
                 await event.edit(
@@ -109,6 +115,8 @@ if Var.PRIVATE_GROUP_ID is not None:
             reply = await event.get_reply_message()
             chat = await event.client.get_entity(reply.from_id)
             firstname = str(chat.first_name)
+            if chat.id in PM_START:
+                PM_START.remove(chat.id)
             if pmpermit_sql.is_approved(chat.id):
                 pmpermit_sql.disapprove(chat.id)
                 await event.edit(
@@ -129,6 +137,8 @@ if Var.PRIVATE_GROUP_ID is not None:
             replied_user = await event.client(GetFullUserRequest(event.chat_id))
             firstname = replied_user.user.first_name
             chat = await event.get_chat()
+            if chat.id in PM_START:
+                PM_START.remove(chat.id)
             await event.edit(
                 " ███████▄▄███████████▄  \n▓▓▓▓▓▓█░░░░░░░░░░░░░░█\n▓▓▓▓▓▓█░░░░░░░░░░░░░░█\n▓▓▓▓▓▓█░░░░░░░░░░░░░░█\n▓▓▓▓▓▓█░░░░░░░░░░░░░░█\n▓▓▓▓▓▓█░░░░░░░░░░░░░░█\n▓▓▓▓▓▓███░░░░░░░░░░░░█\n██████▀▀▀█░░░░██████▀  \n░░░░░░░░░█░░░░█  \n░░░░░░░░░░█░░░█  \n░░░░░░░░░░░█░░█  \n░░░░░░░░░░░█░░█  \n░░░░░░░░░░░░▀▀ \n\nYou have been blocked. Now You Can't Message Me..[{}](tg://user?id={})".format(
                     firstname, chat.id
@@ -140,6 +150,8 @@ if Var.PRIVATE_GROUP_ID is not None:
             reply = await event.get_reply_message()
             chat = await event.client.get_entity(reply.from_id)
             firstname = str(chat.first_name)
+            if chat.id in PM_START:
+                PM_START.remove(chat.id)
             await event.edit(
                 " ███████▄▄███████████▄  \n▓▓▓▓▓▓█░░░░░░░░░░░░░░█\n▓▓▓▓▓▓█░░░░░░░░░░░░░░█\n▓▓▓▓▓▓█░░░░░░░░░░░░░░█\n▓▓▓▓▓▓█░░░░░░░░░░░░░░█\n▓▓▓▓▓▓█░░░░░░░░░░░░░░█\n▓▓▓▓▓▓███░░░░░░░░░░░░█\n██████▀▀▀█░░░░██████▀  \n░░░░░░░░░█░░░░█  \n░░░░░░░░░░█░░░█  \n░░░░░░░░░░░█░░█  \n░░░░░░░░░░░█░░█  \n░░░░░░░░░░░░▀▀ \n\nYou have been blocked. Now You Can't Message Me..[{}](tg://user?id={})".format(
                     firstname, chat.id
@@ -241,6 +253,8 @@ if Var.PRIVATE_GROUP_ID is not None:
             await event.client(functions.contacts.BlockRequest(chat_id))
             if chat_id in PREV_REPLY_MESSAGE:
                 await PREV_REPLY_MESSAGE[chat_id].delete()
+            if chat.id in PM_START:
+                PM_START.remove(chat.id)
             PREV_REPLY_MESSAGE[chat_id] = r
             the_message = ""
             the_message += "#BLOCKED_PMs\n\n"
