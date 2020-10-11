@@ -14,7 +14,7 @@ from .sql_helper.gban_sql_helper import get_gbanuser, is_gbanned
 if Config.ANTISPAMBOT_BAN:
 
     @bot.on(events.ChatAction())
-    async def _(event):
+    async def anti_spambot(event):
         if not event.user_joined and not event.user_added:
             return
         chat = event.chat_id
@@ -29,12 +29,10 @@ if Config.ANTISPAMBOT_BAN:
                 adder = event.action_message.from_id
             except AttributeError:
                 return
-        ignore = any(
-            admin.id == adder
-            for admin in bot.iter_participants(
-                event.chat_id, filter=ChannelParticipantsAdmins
-            )
-        )
+        async for admin in event.client.iter_participants(event.chat_id, filter=ChannelParticipantsAdmins):
+            if admin.id == adder:
+                ignore = True
+                break
         if ignore:
             return
         if is_gbanned(user.id):
