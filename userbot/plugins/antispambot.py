@@ -195,6 +195,6 @@ CMD_HELP.update({
         \n\n**Syntax : **`.cascheck`\
         \n**Usage : **Searches for cas(combot antispam service) banned users in group and shows you the list\
         \n\n**Syntax : **`.cascheck`\
-        \n**Usage : **Searches for spamwatch banned users in group and shows you the list\"
+        \n**Usage : **Searches for spamwatch banned users in group and shows you the list"
     }
 )
