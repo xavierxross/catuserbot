@@ -81,7 +81,7 @@ async def upload(path, event, udir_event):
             event.chat_id,
             str(path),
         )
-        Files=os.listdir(path)
+        Files = os.listdir(path)
         Files.sort()
         for file in Files:
             path = os.path.join(path, file)
@@ -135,6 +135,7 @@ async def upload(path, event, udir_event):
                 ),
             )
         uploaded += 1
+
 
 @bot.on(admin_cmd(pattern="upload (.*)", outgoing=True))
 @bot.on(sudo_cmd(pattern="upload (.*)", allow_sudo=True))
