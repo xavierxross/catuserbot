@@ -96,7 +96,7 @@ async def upload(path, event, udir_event):
             str(path),
         )
         Files = os.listdir(path)
-        Files = sortthings(Files,path)
+        Files = sortthings(Files, path)
         for file in Files:
             catpath = os.path.join(path, file)
             await upload(catpath, event, udir_event)
