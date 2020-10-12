@@ -76,7 +76,17 @@ def extract_w_h(file):
 
 async def upload(path, event, udir_event):
     global uploaded
-    if os.path.isfile(path):
+    if os.path.isdir(path):
+        await event.client.send_message(
+            event.chat_id,
+            str(path),
+        )
+        Files=os.listdir(path)
+        Files.sort()
+        for file in Files:
+            path = os.path.join(path, file)
+            await upload(path, event, udir_event)
+    elif os.path.isfile(path):
         caption_rts = os.path.basename(path)
         c_time = time.time()
         thumb = None
@@ -125,17 +135,6 @@ async def upload(path, event, udir_event):
                 ),
             )
         uploaded += 1
-    elif os.path.isdir(path):
-        await event.client.send_message(
-            event.chat_id,
-            str(path),
-        )
-        Files = os.listdir(path)
-        Files.sort()
-        for file in Files:
-            path = os.path.join(path, file)
-            await upload(path, event, udir_event)
-
 
 @bot.on(admin_cmd(pattern="upload (.*)", outgoing=True))
 @bot.on(sudo_cmd(pattern="upload (.*)", allow_sudo=True))
