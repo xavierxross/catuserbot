@@ -73,7 +73,8 @@ def extract_w_h(file):
         height = int(response_json["streams"][0]["height"])
         return width, height
 
-def sortthings(contents,path):
+
+def sortthings(contents, path):
     catsort = []
     contents.sort()
     for file in contents:
@@ -85,6 +86,7 @@ def sortthings(contents,path):
         if os.path.isfile(catpath):
             catsort.append(file)
     return catsort
+
 
 async def upload(path, event, udir_event):
     global uploaded
