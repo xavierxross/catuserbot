@@ -115,8 +115,8 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                 u = int(u.id)
             except:
                 return
-            newsecret = {str(timestamp): {"userid": u, "text": txct}}
             timestamp = int(event.query.query_id)
+            newsecret = {str(timestamp): {"userid": u, "text": txct}}
             if jsondata:
                 jsondata.update(newsecret)
                 json.dump(jsondata, open(secret, "w"))
