@@ -117,11 +117,7 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                 return
             timestamp = int(event.query.query_id)
             newsecret = {str(timestamp): {"userid": u, "text": txct}}
-            if jsondata:
-                jsondata.update(newsecret)
-                json.dump(jsondata, open(secret, "w"))
-            else:
-                json.dump(newsecret, open(secret, "w"))
+            
             buttons = [
                 custom.Button.inline("show message 🔐", data=f"secret_{timestamp}")
             ]
@@ -131,6 +127,11 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                 buttons=buttons,
             )
             await event.answer([result] if result else None)
+            if jsondata:
+                jsondata.update(newsecret)
+                json.dump(jsondata, open(secret, "w"))
+            else:
+                json.dump(newsecret, open(secret, "w"))
 
     @tgbot.on(
         events.callbackquery.CallbackQuery(  # pylint:disable=E0602
@@ -166,7 +167,7 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
 
     @tgbot.on(events.callbackquery.CallbackQuery(data=re.compile(b"secret_(.*)")))
     async def on_plug_in_callback_query_handler(event):
-        timestamp = event.pattern_match.group(1).decode("UTF-8")
+        timestamp = int(event.pattern_match.group(1).decode("UTF-8"))
         if os.path.exists("./userbot/secret.txt"):
             jsondata = json.load(open("./userbot/secrets.txt"))
             try:
@@ -179,7 +180,7 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                 else:
                     reply_pop_up_alert = "why were you looking at this shit go away and do your own work, idiot"
             except KeyError:
-                reply_pop_up_alert = "This message no longer exists "
+                reply_pop_up_alert = "This message no longer exists in bot server"
         else:
             reply_pop_up_alert = "This message no longer exists "
         await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
