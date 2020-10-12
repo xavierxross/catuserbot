@@ -117,7 +117,7 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                 return
             timestamp = int(event.query.query_id)
             newsecret = {str(timestamp): {"userid": u, "text": txct}}
-            
+
             buttons = [
                 custom.Button.inline("show message 🔐", data=f"secret_{timestamp}")
             ]
