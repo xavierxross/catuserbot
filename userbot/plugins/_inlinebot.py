@@ -176,7 +176,7 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
 
     @tgbot.on(events.callbackquery.CallbackQuery(data=re.compile(b"secret_(.*)")))
     async def on_plug_in_callback_query_handler(event):
-        timestamp = event.pattern_match.group(1)
+        event.pattern_match.group(1)
         if os.path.exists("./userbot/secret.txt"):
             jsondata = json.load(open("./userbot/secret.txt"))
             message = jsondata["timestamp"]
