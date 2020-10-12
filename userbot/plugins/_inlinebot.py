@@ -86,8 +86,7 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
             query = query[7:]
             user, txct = query.split(" ", 1)
             builder = event.builder
-            timestamp = int(time.time() * 2)
-            print(event)
+            timestamp = int(event.query.query_id)
             secret = os.path.join("./userbot", "secret.txt")
             try:
                 jsondata = json.load(open(secret))
