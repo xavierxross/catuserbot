@@ -4,7 +4,7 @@ import os
 import subprocess
 import time
 from pathlib import Path
-
+from datetime import datetime
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 from telethon.tl.types import DocumentAttributeVideo
@@ -93,7 +93,7 @@ async def upload(path, event, udir_event):
     if os.path.isdir(path):
         await event.client.send_message(
             event.chat_id,
-            str(path),
+            f"**Folder : **`{str(path)}`",
         )
         Files = os.listdir(path)
         Files = sortthings(Files, path)
@@ -110,7 +110,7 @@ async def upload(path, event, udir_event):
             await event.client.send_file(
                 event.chat_id,
                 path,
-                caption=caption_rts,
+                caption=f"**File Name : **`{caption_rts}`",
                 force_document=False,
                 thumb=thumb,
                 progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
@@ -131,7 +131,7 @@ async def upload(path, event, udir_event):
             await event.client.send_file(
                 event.chat_id,
                 path,
-                caption=caption_rts,
+                caption=f"**File Name : **`{caption_rts}`",
                 thumb=thumb,
                 force_document=False,
                 supports_streaming=True,
@@ -157,25 +157,32 @@ async def uploadir(event):
     global uploaded
     input_str = event.pattern_match.group(1)
     path = Path(input_str)
+    start = datetime.now()
     if not os.path.exists(path):
         await edit_or_reply(
             event,
-            f"there is no such directory/file with the name `{path}` to upload",
+            f"`there is no such directory/file with the name {path} to upload`",
         )
         return
     udir_event = await edit_or_reply(event, "Uploading....")
     if os.path.isdir(path):
         udir_event = await edit_or_reply(
-            event, f"Gathering file details in directory `{path}`"
+            event, f"`Gathering file details in directory {path}`"
         )
         uploaded = 0
         await upload(path, event, udir_event)
-        await udir_event.edit("Uploaded `{}` files successfully !!".format(uploaded))
+        end = datetime.now()
+        ms = (end-start).seconds
+        await udir_event.edit(f"`Uploaded {uploaded} files successfully in {ms} seconds. `")
     else:
         udir_event = await edit_or_reply(event, f"`Uploading.....`")
         uploaded = 0
         await upload(path, event, udir_event)
-        await udir_event.delete()
+        end = datetime.now()
+        ms = (end-start).seconds
+        await udir_event.edit(f"`Uploaded file {str(path)} successfully in {ms} seconds. `")
+    await asyncio.sleep(5)
+    await udir_event.delete()
 
 
 @bot.on(admin_cmd(pattern="uploadas(stream|vn|all) (.*)", outgoing=True))
@@ -279,8 +286,8 @@ async def uploadas(event):
 CMD_HELP.update(
     {
         "upload": "**Plugin :** `upload`\
-    \n\n**Syntax :** `.upload path of file`\
-    \n**Usage : **Uploads the file from the server\
+    \n\n**Syntax :** `.upload path of file/folder`\
+    \n**Usage : **Uploads the file from the server or list of filesfrom that folder\
     \n\n**Syntax : **`.uploadasstream path of video/audio`\
     \n**Usage : **Uploads video/audio as streamable from the server\
     \n\n**Syntax : **`.uploadasvn path of video`\
