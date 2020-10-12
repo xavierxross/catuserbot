@@ -3,15 +3,17 @@ import json
 import os
 import subprocess
 import time
-from datetime import datetime
+from pathlib import Path
+
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 from telethon.tl.types import DocumentAttributeVideo
-from . import ALIVE_NAME, CMD_HELP, LOGS, parse_pre
+
 from ..utils import admin_cmd, edit_or_reply, progress, sudo_cmd
-from pathlib import Path
+from . import CMD_HELP, LOGS, parse_pre
 
 thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
+
 
 async def catlst_of_files(path):
     files = []
@@ -71,7 +73,8 @@ def extract_w_h(file):
         height = int(response_json["streams"][0]["height"])
         return width, height
 
-async def upload(path,event,udir_event):
+
+async def upload(path, event, udir_event):
     global uploaded
     if os.path.isfile(path):
         caption_rts = os.path.basename(path)
@@ -129,10 +132,10 @@ async def upload(path,event,udir_event):
             parse_mode=parse_pre,
         )
         Files = os.listdir(path)
-        Files.sort() 
+        Files.sort()
         for file in Files:
-            path = os.path.join(path , file)
-            await upload(path,event,udir_event)
+            path = os.path.join(path, file)
+            await upload(path, event, udir_event)
 
 
 @bot.on(admin_cmd(pattern="upload (.*)", outgoing=True))
@@ -144,20 +147,22 @@ async def uploadir(event):
         await edit_or_reply(
             event,
             f"there is no such directory/file with the name `{path}` to upload",
-            )
+        )
         return
     udir_event = await edit_or_reply(event, "Uploading....")
     if os.path.isdir(path):
-        udir_event = await edit_or_reply(event, f"Gathering file details in directory `{path}`")
+        udir_event = await edit_or_reply(
+            event, f"Gathering file details in directory `{path}`"
+        )
         global uploaded
         uploaded = 0
-        await upload(path, event,udir_event)
+        await upload(path, event, udir_event)
         await udir_event.edit("Uploaded `{}` files successfully !!".format(uploaded))
     else:
         udir_event = await edit_or_reply(event, f"`Uploading.....`")
         global uploaded
         uploaded = 0
-        await upload(path, event,udir_event)
+        await upload(path, event, udir_event)
         await udir_event.delete()
 
 
