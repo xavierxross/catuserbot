@@ -73,6 +73,18 @@ def extract_w_h(file):
         height = int(response_json["streams"][0]["height"])
         return width, height
 
+def sortthings(contents,path):
+    catsort = []
+    contents.sort()
+    for file in contents:
+        catpath = os.path.join(path, file)
+        if os.path.isdir(catpath):
+            catsort.append(file)
+    for file in contents:
+        catpath = os.path.join(path, file)
+        if os.path.isfile(catpath):
+            catsort.append(file)
+    return catsort
 
 async def upload(path, event, udir_event):
     global uploaded
@@ -82,7 +94,7 @@ async def upload(path, event, udir_event):
             str(path),
         )
         Files = os.listdir(path)
-        Files.sort()
+        Files = sortthings(Files)
         for file in Files:
             catpath = os.path.join(path, file)
             await upload(catpath, event, udir_event)
