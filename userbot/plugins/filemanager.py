@@ -22,6 +22,7 @@ async def lst(event):
             f"there is no such directory or file with the name `{cat}` check again",
         )
         return
+    print(f"'{path}'")
     if os.path.isdir(path):
         if cat:
             msg = "Folders and Files in `{}` :\n".format(path)
