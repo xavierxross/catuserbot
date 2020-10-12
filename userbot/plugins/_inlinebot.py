@@ -8,7 +8,7 @@ from telethon import Button, custom, events
 
 from . import CMD_LIST, catalive
 
-CAT_IMG = Config.ALIVE_PIC if Config.ALIVE_PIC else None
+CAT_IMG = Config.ALIVE_PIC or None
 BTN_URL_REGEX = re.compile(r"(\[([^\[]+?)\]\<buttonurl:(?:/{0,2})(.+?)(:same)?\>)")
 
 if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
@@ -81,7 +81,7 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                 link_preview=False,
             )
             await event.answer([result] if result else None)
-       elif event.query.user_id == bot.uid and match:
+        elif event.query.user_id == bot.uid and match:
             query = query[7:]
             user, txct = query.split(" ", 1)
             builder = event.builder
