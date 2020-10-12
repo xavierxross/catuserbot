@@ -121,7 +121,10 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                 await event.answer([result] if result else None)
             except ValueError:
                 # if u is username
-                u = await event.client.get_entity(user)
+                try:
+                    u = await event.client.get_entity(user)
+                except ValueError:
+                    return
                 newsecret = {str(timestamp): {"userid": u.id, "text": txct}}
                 if jsondata:
                     jsondata.update(newsecret)
@@ -141,6 +144,8 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                     buttons=buttons,
                 )
                 await event.answer([result] if result else None)
+           except:
+                pass
 
     @tgbot.on(
         events.callbackquery.CallbackQuery(  # pylint:disable=E0602
