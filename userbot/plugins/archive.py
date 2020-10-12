@@ -24,7 +24,7 @@ from ..utils import admin_cmd, edit_or_reply, progress, sudo_cmd
 thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
 
 
-@bort.on(admin_cmd(pattern=("zip ?(.*)")))
+@bot.on(admin_cmd(pattern=("zip ?(.*)")))
 @bot.on(sudo_cmd(pattern="zip ?(.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
