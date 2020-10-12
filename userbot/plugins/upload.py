@@ -83,11 +83,9 @@ async def upload(path, event, udir_event):
         )
         Files = os.listdir(path)
         Files.sort()
-        print(Files)
         for file in Files:
-            print(file)
-            path = os.path.join(path, file)
-            await upload(path, event, udir_event)
+            catpath = os.path.join(path, file)
+            await upload(catpath, event, udir_event)
     elif os.path.isfile(path):
         caption_rts = os.path.basename(path)
         c_time = time.time()
