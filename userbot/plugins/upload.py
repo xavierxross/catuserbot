@@ -155,11 +155,12 @@ async def uploadir(event):
         udir_event = await edit_or_reply(
             event, f"Gathering file details in directory `{path}`"
         )
-        await upload(path, event, udir_event)
         uploaded = 0
+        await upload(path, event, udir_event)
         await udir_event.edit("Uploaded `{}` files successfully !!".format(uploaded))
     else:
         udir_event = await edit_or_reply(event, f"`Uploading.....`")
+        uploaded = 0
         await upload(path, event, udir_event)
         await udir_event.delete()
 
