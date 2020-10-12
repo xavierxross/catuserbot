@@ -179,7 +179,7 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
         timestamp = event.pattern_match.group(1)
         if os.path.exists("./userbot/secret.txt"):
             jsondata = json.load(open("./userbot/secret.txt"))
-            message = jsondata[timestamp]
+            message = jsondata["timestamp"]
             if message:
                 ids = [int(message[0]), bot.uid]
                 if event.query.user_id in ids:
