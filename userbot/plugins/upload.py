@@ -84,7 +84,8 @@ async def upload(path, event, udir_event):
         Files = os.listdir(path)
         Files.sort()
         print(Files)
-        async for file in Files:
+        for file in Files:
+            print(file)
             path = os.path.join(path, file)
             await upload(path, event, udir_event)
     elif os.path.isfile(path):
