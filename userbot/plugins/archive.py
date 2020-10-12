@@ -11,11 +11,13 @@ import tarfile
 import time
 import zipfile
 from datetime import datetime
-import patoolib
 from pathlib import Path
+
+import patoolib
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 from telethon.tl.types import DocumentAttributeVideo
+
 from .. import CMD_HELP
 from ..utils import admin_cmd, edit_or_reply, progress, sudo_cmd
 
@@ -170,9 +172,7 @@ async def _(event):
             await mone.edit(str(e))
     elif input_str:
         directory_name = input_str
-        await mone.edit(
-            "Local file compressed to `{}`".format(directory_name + ".rar")
-        )
+        await mone.edit("Local file compressed to `{}`".format(directory_name + ".rar"))
 
 
 @bot.on(admin_cmd(pattern=("tar ?(.*)")))
