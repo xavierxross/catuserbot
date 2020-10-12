@@ -3,7 +3,7 @@ import json
 import math
 import os
 import re
-
+import time
 from telethon import Button, custom, events
 
 from . import CMD_LIST, catalive
@@ -85,7 +85,7 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
             query = query[7:]
             user, txct = query.split(" ", 1)
             builder = event.builder
-            timestamp = int(event.query.query_id)
+            timestamp = int(time.time())
             secret = os.path.join("./userbot", "secret.txt")
             try:
                 jsondata = json.load(open(secret))
@@ -94,15 +94,6 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
             try:
                 # if u is user id
                 u = int(user)
-                newsecret = {str(timestamp): {"userid": u, "text": txct}}
-                if jsondata:
-                    jsondata.update(newsecret)
-                    json.dump(jsondata, open(secret, "w"))
-                else:
-                    json.dump(newsecret, open(secret, "w"))
-                buttons = [
-                    custom.Button.inline("show message 🔐", data=f"secret_{timestamp}")
-                ]
                 try:
                     u = await event.client.get_entity(u)
                     if u.username:
@@ -112,39 +103,33 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                 except ValueError:
                     # ValueError: Could not find the input entity
                     sandy = f"[user](tg://user?id={u})"
-                result = builder.article(
-                    title="secret message",
-                    text=f"🔒 A whisper message to {sandy}, Only he/she can open it.",
-                    buttons=buttons,
-                )
-                await event.answer([result] if result else None)
             except ValueError:
                 # if u is username
                 try:
                     u = await event.client.get_entity(user)
                 except ValueError:
                     return
-                newsecret = {str(timestamp): {"userid": u.id, "text": txct}}
-                if jsondata:
-                    jsondata.update(newsecret)
-                    json.dump(jsondata, open(secret, "w"))
-                else:
-                    json.dump(newsecret, open(secret, "w"))
-                buttons = [
-                    custom.Button.inline("show message 🔐", data=f"secret_{timestamp}")
-                ]
                 if u.username:
                     sandy = f"@{u.username}"
                 else:
                     sandy = f"[{u.first_name}](tg://user?id={u.id})"
-                result = builder.article(
+            except:
+                return
+            buttons = [
+                    custom.Button.inline("show message 🔐", data=f"secret_{timestamp}")
+                ]
+            result = builder.article(
                     title="secret message",
                     text=f"🔒 A whisper message to {sandy}, Only he/she can open it.",
                     buttons=buttons,
-                )
-                await event.answer([result] if result else None)
-            except:
-                pass
+                    )
+            await event.answer([result] if result else None)
+            newsecret = {str(timestamp): {"userid": u, "text": txct}}
+            if jsondata:
+                jsondata.update(newsecret)
+                json.dump(jsondata, open(secret, "w"))
+            else:
+                json.dump(newsecret, open(secret, "w"))
 
     @tgbot.on(
         events.callbackquery.CallbackQuery(  # pylint:disable=E0602
