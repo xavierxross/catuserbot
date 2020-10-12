@@ -1,9 +1,10 @@
 import io
-import math
-import re
-import os
-import time
 import json
+import math
+import os
+import re
+import time
+
 from telethon import Button, custom, events
 
 from . import CMD_LIST, catalive
@@ -85,7 +86,7 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
             query = query[7:]
             user, txct = query.split(" ", 1)
             builder = event.builder
-            timestamp = int(time.time()*2)
+            timestamp = int(time.time() * 2)
             secret = os.path.join("./userbot", "secret.txt")
             try:
                 jsondata = json.load(open(secret))
@@ -94,12 +95,12 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
             try:
                 # if u is user id
                 u = int(user)
-                newsecret = {str(timestamp) : [u , txct]}
+                newsecret = {str(timestamp): [u, txct]}
                 if jsondata:
                     jsondata.update(newsecret)
-                    json.dump(jsondata, open(secret,'w'))
+                    json.dump(jsondata, open(secret, "w"))
                 else:
-                    json.dump(newsecret, open(secret,'w'))
+                    json.dump(newsecret, open(secret, "w"))
                 buttons = [
                     custom.Button.inline("show message 🔐", data=f"secret_{timestamp}")
                 ]
@@ -121,15 +122,15 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
             except ValueError:
                 # if u is username
                 u = await event.client.get_entity(user)
-                newsecret = {str(timestamp) : [u.id , txct]}
+                newsecret = {str(timestamp): [u.id, txct]}
                 if jsondata:
                     jsondata.update(newsecret)
-                    json.dump(jsondata, open(secret,'w'))
+                    json.dump(jsondata, open(secret, "w"))
                 else:
-                    json.dump(newsecret, open(secret,'w'))
+                    json.dump(newsecret, open(secret, "w"))
                 buttons = [
-                        custom.Button.inline("show message 🔐", data=f"secret_{timestamp}")
-                    ]
+                    custom.Button.inline("show message 🔐", data=f"secret_{timestamp}")
+                ]
                 if u.username:
                     sandy = f"@{u.username}"
                 else:
@@ -140,7 +141,6 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                     buttons=buttons,
                 )
                 await event.answer([result] if result else None)
-
 
     @tgbot.on(
         events.callbackquery.CallbackQuery(  # pylint:disable=E0602
@@ -185,11 +185,9 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                 encrypted_tcxt = message[1]
                 reply_pop_up_alert = encrypted_tcxt
             else:
-                reply_pop_up_alert = (
-                    "why were you looking at this shit go away and do your own work, idiot"
-                )
+                reply_pop_up_alert = "why were you looking at this shit go away and do your own work, idiot"
         else:
-            reply_pop_up_alert =  "This message no longer exists "
+            reply_pop_up_alert = "This message no longer exists "
         await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
     @tgbot.on(
