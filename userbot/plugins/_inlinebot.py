@@ -4,6 +4,7 @@ import math
 import os
 import re
 import time
+
 from telethon import Button, custom, events
 
 from . import CMD_LIST, catalive
@@ -116,13 +117,13 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
             except:
                 return
             buttons = [
-                    custom.Button.inline("show message 🔐", data=f"secret_{timestamp}")
-                ]
+                custom.Button.inline("show message 🔐", data=f"secret_{timestamp}")
+            ]
             result = builder.article(
-                    title="secret message",
-                    text=f"🔒 A whisper message to {sandy}, Only he/she can open it.",
-                    buttons=buttons,
-                    )
+                title="secret message",
+                text=f"🔒 A whisper message to {sandy}, Only he/she can open it.",
+                buttons=buttons,
+            )
             await event.answer([result] if result else None)
             newsecret = {str(timestamp): {"userid": u, "text": txct}}
             if jsondata:
