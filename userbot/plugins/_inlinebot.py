@@ -180,7 +180,7 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
         if os.path.exists("./userbot/secret.txt"):
             jsondata = json.load(open("./userbot/secret.txt"))
             try:
-                message = jsondata[str(timestamp)]
+                message = jsondata[f"{timestamp}"]
                 userid = message["userid"]
                 ids = [userid, bot.uid]
                 if event.query.user_id in ids:
