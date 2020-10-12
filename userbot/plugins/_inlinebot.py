@@ -95,7 +95,7 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
             try:
                 # if u is user id
                 u = int(user)
-                newsecret = {str(timestamp): [u, txct]}
+                newsecret = {str(timestamp): {'userid': u, 'text': txct}}
                 if jsondata:
                     jsondata.update(newsecret)
                     json.dump(jsondata, open(secret, "w"))
@@ -122,7 +122,7 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
             except ValueError:
                 # if u is username
                 u = await event.client.get_entity(user)
-                newsecret = {str(timestamp): [u.id, txct]}
+                newsecret = {str(timestamp): {'userid': u.id, 'text': txct}}
                 if jsondata:
                     jsondata.update(newsecret)
                     json.dump(jsondata, open(secret, "w"))
@@ -174,16 +174,17 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
             reply_pop_up_alert = "Please get your own catuserbot, and don't use mine! Join @catuserbot17 help "
             await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
-    @tgbot.on(events.callbackquery.CallbackQuery(data=re.compile(b"secret_(.*)")))
+    @tgbot.on(events.callbackquery.CallbackQuery(data=re.compile(b"secret_(.+)")))
     async def on_plug_in_callback_query_handler(event):
-        event.pattern_match.group(1)
+        timestamp = event.pattern_match.group(1)
         if os.path.exists("./userbot/secret.txt"):
             jsondata = json.load(open("./userbot/secret.txt"))
-            message = jsondata["timestamp"]
+            message = jsondata[timestamp]
             if message:
-                ids = [int(message[0]), bot.uid]
+                userid =  message['userid']
+                ids = [userid , bot.uid]
                 if event.query.user_id in ids:
-                    encrypted_tcxt = message[1]
+                    encrypted_tcxt = message['text']
                     reply_pop_up_alert = encrypted_tcxt
                 else:
                     reply_pop_up_alert = "why were you looking at this shit go away and do your own work, idiot"
