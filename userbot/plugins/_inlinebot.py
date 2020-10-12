@@ -119,18 +119,18 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
             buttons = [
                 custom.Button.inline("show message 🔐", data=f"secret_{timestamp}")
             ]
-            result = builder.article(
-                title="secret message",
-                text=f"🔒 A whisper message to {sandy}, Only he/she can open it.",
-                buttons=buttons,
-            )
-            await event.answer([result] if result else None)
             newsecret = {str(timestamp): {"userid": u, "text": txct}}
             if jsondata:
                 jsondata.update(newsecret)
                 json.dump(jsondata, open(secret, "w"))
             else:
                 json.dump(newsecret, open(secret, "w"))
+            result = builder.article(
+                title="secret message",
+                text=f"🔒 A whisper message to {sandy}, Only he/she can open it.",
+                buttons=buttons,
+            )
+            await event.answer([result] if result else None)
 
     @tgbot.on(
         events.callbackquery.CallbackQuery(  # pylint:disable=E0602
