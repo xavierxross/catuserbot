@@ -156,7 +156,7 @@ async def upload(path, event, udir_event):
 @bot.on(sudo_cmd(pattern="upload (.*)", allow_sudo=True))
 async def uploadir(event):
     global uploaded
-    input_str = event.pattern_match.group(1)
+    input_str = "".join(event.text.split(maxsplit=1)[1:])
     path = Path(input_str)
     start = datetime.now()
     if not os.path.exists(path):
