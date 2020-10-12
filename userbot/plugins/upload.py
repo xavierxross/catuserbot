@@ -129,7 +129,6 @@ async def upload(path, event, udir_event):
         await event.client.send_message(
             event.chat_id,
             path,
-            parse_mode=parse_pre,
         )
         Files = os.listdir(path)
         Files.sort()
