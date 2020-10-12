@@ -141,6 +141,7 @@ async def upload(path, event, udir_event):
 @bot.on(admin_cmd(pattern="upload (.*)", outgoing=True))
 @bot.on(sudo_cmd(pattern="upload (.*)", allow_sudo=True))
 async def uploadir(event):
+    global uploaded
     input_str = event.pattern_match.group(1)
     path = Path(input_str)
     if not os.path.exists(path):
@@ -154,14 +155,11 @@ async def uploadir(event):
         udir_event = await edit_or_reply(
             event, f"Gathering file details in directory `{path}`"
         )
-        global uploaded
-        uploaded = 0
         await upload(path, event, udir_event)
+        uploaded = 0
         await udir_event.edit("Uploaded `{}` files successfully !!".format(uploaded))
     else:
         udir_event = await edit_or_reply(event, f"`Uploading.....`")
-        global uploaded
-        uploaded = 0
         await upload(path, event, udir_event)
         await udir_event.delete()
 
