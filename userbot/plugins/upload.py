@@ -79,11 +79,11 @@ def sortthings(contents, path):
     contents.sort()
     for file in contents:
         catpath = os.path.join(path, file)
-        if os.path.isdir(catpath):
+        if os.path.isfile(catpath):
             catsort.append(file)
     for file in contents:
         catpath = os.path.join(path, file)
-        if os.path.isfile(catpath):
+        if os.path.isdir(catpath):
             catsort.append(file)
     return catsort
 
@@ -96,7 +96,7 @@ async def upload(path, event, udir_event):
             str(path),
         )
         Files = os.listdir(path)
-        Files = sortthings(Files)
+        Files = sortthings(Files,path)
         for file in Files:
             catpath = os.path.join(path, file)
             await upload(catpath, event, udir_event)
