@@ -3,7 +3,6 @@ import json
 import math
 import os
 import re
-import time
 
 from telethon import Button, custom, events
 
