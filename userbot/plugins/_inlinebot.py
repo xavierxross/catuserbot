@@ -112,10 +112,11 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                     sandy = f"@{u.username}"
                 else:
                     sandy = f"[{u.first_name}](tg://user?id={u.id})"
+                u = int(u.id)
             except:
                 return
-            timestamp = int(event.query.query_id)
             newsecret = {str(timestamp): {"userid": u, "text": txct}}
+            timestamp = int(event.query.query_id)
             if jsondata:
                 jsondata.update(newsecret)
                 json.dump(jsondata, open(secret, "w"))
