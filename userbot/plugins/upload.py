@@ -3,8 +3,9 @@ import json
 import os
 import subprocess
 import time
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
+
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 from telethon.tl.types import DocumentAttributeVideo
@@ -172,15 +173,19 @@ async def uploadir(event):
         uploaded = 0
         await upload(path, event, udir_event)
         end = datetime.now()
-        ms = (end-start).seconds
-        await udir_event.edit(f"`Uploaded {uploaded} files successfully in {ms} seconds. `")
+        ms = (end - start).seconds
+        await udir_event.edit(
+            f"`Uploaded {uploaded} files successfully in {ms} seconds. `"
+        )
     else:
         udir_event = await edit_or_reply(event, f"`Uploading.....`")
         uploaded = 0
         await upload(path, event, udir_event)
         end = datetime.now()
-        ms = (end-start).seconds
-        await udir_event.edit(f"`Uploaded file {str(path)} successfully in {ms} seconds. `")
+        ms = (end - start).seconds
+        await udir_event.edit(
+            f"`Uploaded file {str(path)} successfully in {ms} seconds. `"
+        )
     await asyncio.sleep(5)
     await udir_event.delete()
 
