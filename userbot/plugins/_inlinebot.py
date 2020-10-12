@@ -86,8 +86,7 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
             query = query[7:]
             user, txct = query.split(" ", 1)
             builder = event.builder
-            timestamp = int(time.time())
-            secret = os.path.join("./userbot", "secret.txt")
+            secret = os.path.join("./userbot", "secrets.txt")
             try:
                 jsondata = json.load(open(secret))
             except:
@@ -116,15 +115,16 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                     sandy = f"[{u.first_name}](tg://user?id={u.id})"
             except:
                 return
-            buttons = [
-                custom.Button.inline("show message 🔐", data=f"secret_{timestamp}")
-            ]
+            timestamp = int(event.query.query_id)
             newsecret = {str(timestamp): {"userid": u, "text": txct}}
             if jsondata:
                 jsondata.update(newsecret)
                 json.dump(jsondata, open(secret, "w"))
             else:
                 json.dump(newsecret, open(secret, "w"))
+            buttons = [
+                custom.Button.inline("show message 🔐", data=f"secret_{timestamp}")
+            ]
             result = builder.article(
                 title="secret message",
                 text=f"🔒 A whisper message to {sandy}, Only he/she can open it.",
@@ -168,7 +168,7 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
     async def on_plug_in_callback_query_handler(event):
         timestamp = event.pattern_match.group(1).decode("UTF-8")
         if os.path.exists("./userbot/secret.txt"):
-            jsondata = json.load(open("./userbot/secret.txt"))
+            jsondata = json.load(open("./userbot/secrets.txt"))
             try:
                 message = jsondata[f"{timestamp}"]
                 userid = message["userid"]
